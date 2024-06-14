@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${users}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getName()}"></td>
+        <td th:text="${user.getUsername()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td th:text="${user.getRoles()}"></td>
+        <td><a th:href="@{/admin/edit(id=${user.getId()})}">Edit</a></td>
+        <td>
+            <form th:method="DELETE" th:action="@{/admin(id=${user.getId()})}" th:object="${user}">
+                <input type="submit" value="DELETE"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+
+</table>
+
+<a href="/logout">Log out</a>
+
+</body>
+</html>
