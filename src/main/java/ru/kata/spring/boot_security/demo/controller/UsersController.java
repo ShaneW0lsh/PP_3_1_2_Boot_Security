@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -47,6 +48,8 @@ public class UsersController {
     public String showUsers(ModelMap model) {
         List<User> userList = userService.listUsers();
         model.addAttribute("users", userList);
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", roleService.getRoles());
         return "admin-page";
     }
 
@@ -78,6 +81,10 @@ public class UsersController {
             user.setPassword(oldUser.getPassword());
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            user.setRoles(oldUser.getRoles());
         }
         userService.updateUser(id, user);
 
