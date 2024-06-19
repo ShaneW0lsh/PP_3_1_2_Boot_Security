@@ -45,11 +45,12 @@ public class UsersController {
     }
 
     @GetMapping("/admin")
-    public String showUsers(ModelMap model) {
+    public String showUsers(ModelMap model, Principal principal) {
         List<User> userList = userService.listUsers();
         model.addAttribute("users", userList);
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getRoles());
+        model.addAttribute("admin", userService.findByUsername(principal.getName()));
         return "admin-page";
     }
 
