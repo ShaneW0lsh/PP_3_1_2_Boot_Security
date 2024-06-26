@@ -1,16 +1,16 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.attoparser.util.TextUtil;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.util.TextUtils;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -23,6 +23,8 @@ public class UsersController {
     private final UserService userService;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+
+    private final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
     @Autowired
     public UsersController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
@@ -50,6 +52,9 @@ public class UsersController {
         model.addAttribute("users", userList);
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getRoles());
+        for (Role role : roleService.getRoles()) {
+            logger.info(role.getName());
+        }
         model.addAttribute("admin", userService.findByUsername(principal.getName()));
         return "admin-page";
     }

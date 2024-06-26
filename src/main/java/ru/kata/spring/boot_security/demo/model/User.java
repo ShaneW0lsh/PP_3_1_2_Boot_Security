@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -21,21 +23,26 @@ public class User {
     private int id;
 
     @Column(name = "full_name")
+    @NotEmpty(message = "Name can't be empty")
+    @Size(min = 2, max = 30, message = "Name can't be smaller than 2 letters and bigger than 30")
     private String name;
 
     @Column(name = "username")
     private String username;
 
     @Column(name = "password")
+    @NotEmpty(message = "User should have a password")
     private String password;
 
     @Column(name = "email")
+    @NotEmpty(message = "Email should not be empty")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @NotEmpty(message = "User must have at least one role")
     private Collection<Role> roles;
 
     public String getUsername() {

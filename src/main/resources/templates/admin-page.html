@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.min.js}"></script>
 
@@ -60,7 +58,8 @@
                 <h1 class="mb-4">Admin panel</h1>
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="usersTable-tab" data-bs-toggle="tab" data-bs-target="#usersTable"
+                        <button class="nav-link active" id="usersTable-tab" data-bs-toggle="tab"
+                                data-bs-target="#usersTable"
                                 type="button" role="tab" aria-controls="usersTable" aria-selected="true">Users table
                         </button>
                     </li>
@@ -73,7 +72,8 @@
 
 
                 <div class="tab-content">
-                    <div class="tab-pane fade show active" id="usersTable" role="tabpanel" aria-labelledby="usersTable-tab">
+                    <div class="tab-pane fade show active" id="usersTable" role="tabpanel"
+                         aria-labelledby="usersTable-tab">
                         <div class="container">
                             <div class="row border">
                                 <div class="col mt-2">
@@ -94,31 +94,7 @@
                                             <th>Delete</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr th:each="user: ${users}">
-                                            <td th:text="${user.getId()}"></td>
-                                            <td th:text="${user.getName()}"></td>
-                                            <td th:text="${user.getUsername()}"></td>
-                                            <td th:text="${user.getEmail()}"></td>
-                                            <td>
-                                                <span th:each="role : ${user.getRoles()}" th:text="${role.getName()} + ' '"></span>
-                                            </td>
-                                            <!--        <td th:text="${user.getRoles()}"></td>-->
-                                            <!--                                <td><a class="btn btn-primary" th:href="@{/admin/edit(id=${user.getId()})}"-->
-                                            <!--                                       role="button">Edit</a>-->
-                                            <!--                                </td>-->
-                                            <td>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#editModal">Edit
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <form th:method="DELETE" th:action="@{/admin(id=${user.getId()})}"
-                                                      th:object="${user}">
-                                                    <input class="btn btn-danger" type="submit" value="DELETE"/>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                        <tbody id="place_to_put_users_data">
                                         </tbody>
                                     </table>
                                 </div>
@@ -135,53 +111,52 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="edit-user-form" th:method="PATCH" th:action="@{/admin(id=${user.getId()})}"
-                                              th:object="${user}">
+                                        <form id="edit-user-form">
                                             <div class="mb-3">
                                                 <label for="user-fullName"
                                                        class="col-form-label">Full name:</label>
-                                                <input type="text" class="form-control" th:field="*{name}" id="user-fullName">
+                                                <input type="text" class="form-control"
+                                                       id="user-fullName">
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="user-username"
                                                        class="col-form-label">Username:</label>
-                                                <input type="text" class="form-control" th:field="*{username}" id="user-username">
+                                                <input type="text" class="form-control"
+                                                       id="user-username">
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="user-email"
                                                        class="col-form-label">Email:</label>
-                                                <input type="email" class="form-control" th:field="*{email}" id="user-email">
+                                                <input type="email" class="form-control"
+                                                       id="user-email">
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="user-password"
                                                        class="col-form-label">Password:</label>
-                                                <input type="password" class="form-control" th:field="*{password}"
+                                                <input type="password" class="form-control"
                                                        id="user-password">
                                             </div>
 
                                             <div class="mb-4">
                                                 <label class="col-form-label" for="edit-roles-select">Role</label>
                                                 <div id="edit-roles-select">
-                                                    <select class="form-select" aria-label="Default select example"
+                                                    <select class="form-select" aria-label="Default select example" id="user-edit-roles-select"
                                                             th:field="*{roles}">
                                                         <option value="" selected>Select Role</option>
-                                                        <option th:each="role : ${roles}" th:value="${role.getId()}"
+                                                        <option th:each="role : ${roles}" th:value="${role.getName()}"
                                                                 th:text="${role.getName()}"></option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <!--                                <div class="mb-3">-->
-                                            <!--                                    <label for="message-text"-->
-                                            <!--                                           class="col-form-label">Message:</label>-->
-                                            <!--                                    <textarea class="form-control" id="message-text"></textarea>-->
-                                            <!--                                </div>-->
-                                            <button type="button" class="btn btn-secondary centered-label" data-bs-dismiss="modal">
+                                            <button type="button" class="btn btn-secondary centered-label"
+                                                    data-bs-dismiss="modal">
                                                 Close
                                             </button>
-                                            <button type="submit" class="btn btn-primary centered-label">Edit User</button>
+                                            <button type="button" id="edit-user-submit-button" class="btn btn-primary centered-label">Edit User
+                                            </button>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
@@ -201,46 +176,51 @@
                                 <div class="row border">
                                     <div class="col centered-label">
                                         <div class="custom-width">
-                                            <form th:method="POST" th:action="@{/admin}" th:object="${user}">
                                                 <div class="mb-2 mt-3">
-                                                    <label class="form-label centered-label" for="name-input">Full name</label>
-                                                    <input type="text" class="form-control" th:field="*{name}" id="name-input"/>
+                                                    <label class="form-label centered-label" for="name-input">Full
+                                                        name</label>
+                                                    <input type="text" class="form-control"
+                                                           id="name-input"/>
                                                 </div>
 
                                                 <div class="mb-2">
                                                     <label class="form-label centered-label" for="username-input">Username</label>
-                                                    <input type="text" class="form-control" th:field="*{username}"
+                                                    <input type="text" class="form-control"
                                                            id="username-input"/>
                                                 </div>
 
                                                 <div class="mb-2">
-                                                    <label class="form-label centered-label" for="email-input">Email</label>
-                                                    <input type="email" class="form-control" th:field="*{email}" id="email-input"/>
+                                                    <label class="form-label centered-label"
+                                                           for="email-input">Email</label>
+                                                    <input type="email" class="form-control"
+                                                           id="email-input"/>
                                                 </div>
 
                                                 <div class="mb-2">
                                                     <label class="form-label centered-label" for="password-input">Enter
                                                         password</label>
-                                                    <input type="password" class="form-control" th:field="*{password}"
+                                                    <input type="password" class="form-control"
                                                            id="password-input"/>
                                                 </div>
 
                                                 <div class="mb-4">
-                                                    <label class="form-label centered-label" for="roles-select">Role</label>
+                                                    <label class="form-label centered-label"
+                                                           for="roles-select">Role</label>
                                                     <div id="roles-select">
                                                         <select class="form-select" aria-label="Default select example"
-                                                                th:field="*{roles}">
+                                                                th:field="*{roles}" id="create-user-role-select">
                                                             <option value="" selected>Select Role</option>
-                                                            <option th:each="role : ${roles}" th:value="${role.getId()}"
+                                                            <option th:each="role : ${roles}" th:value="${role.getName()}"
                                                                     th:text="${role.getName()}"></option>
                                                         </select>
                                                     </div>
                                                 </div>
 
                                                 <div class="centered-label">
-                                                    <input class="btn btn-success mb-4" type="submit" value="Add new user"/>
+                                                    <input class="btn btn-success mb-4" type="button" id="createUserButton"
+                                                           value="Add new user"/>
                                                 </div>
-                                            </form>
+<!--                                            </form>-->
 
                                         </div>
                                     </div>
@@ -253,35 +233,266 @@
         </div>
     </div>
 </div>
+<script type="module">
 
-<script>
+    async function getAllUsers() {
+        const response = await fetch("http://localhost:8080/api");
+        return await response.json();
+    }
+
+    let userTableData;
+
+    async function fillUsersTable() {
+        userTableData = await getAllUsers();
+        console.log("Hello it worked!!")
+        const userDataPlaceholder = document.getElementById("place_to_put_users_data");
+        userDataPlaceholder.innerHTML = "";
+        console.log("here is the html:")
+        console.log(userDataPlaceholder.innerHTML);
+        userTableData.forEach(user => {
+
+            let resultRolesString = "";
+            user.roles.forEach(role => {
+                resultRolesString += `<span>${role.name} </span>`;
+            });
+
+            userDataPlaceholder.insertAdjacentHTML('beforeend',
+                `<tr>
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td>${resultRolesString}</td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#editModal">Edit
+                    </button>
+                </td>
+                <td>
+                        <input class="btn btn-danger" type="button" value="DELETE"/>
+                </td>
+            </tr>`
+            );
+        });
+
+        const buttons = document.querySelectorAll('.btn.btn-danger');
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                const button = event.target;
+                const parent = button.parentElement.parentElement;
+
+                const rows = parent.querySelector("td");
+                let new_id = rows.innerText;
+                console.log(`clicked ${new_id}`);
+
+                fetch(`http://localhost:8080/api?id=${new_id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                    .then(response => {
+                        fillUsersTable();
+                    })
+                    .catch(error => {
+                    });
+            })
+        })
+    }
+    await fillUsersTable();
+
+
+    // const buttons = document.querySelectorAll('.btn.btn-danger');
+    //
+    // buttons.forEach((button) => {
+    //     button.addEventListener('click', async (event) => {
+    //         const button = event.target;
+    //         const parent = button.parentElement.parentElement;
+    //
+    //         const rows = parent.querySelector("td");
+    //         let new_id = rows.innerText;
+    //         console.log(`clicked ${new_id}`);
+    //
+    //         fetch(`http://localhost:8080/api?id=${new_id}`, {
+    //             method: 'DELETE',
+    //                 headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({})
+    //             })
+    //             .then(response => {
+    //                 fillUsersTable();
+    //             })
+    //             .catch(error => {
+    //             });
+    //     })
+    // })
+
+    let fullName, username, email, password, roles;
+    let id;
+
     const editModal = document.getElementById('editModal');
     editModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
         const parent = button.parentElement.parentElement;
 
         const rows = parent.querySelectorAll("td");
-        let id, fullName, username, email;
+        let current_user;
         id = rows[0];
-        fullName = rows[1];
-        username = rows[2];
-        email = rows[3];
+        userTableData.forEach(user => {
+            if (user.id == id.innerText) {
+                current_user = user;
+            }
+        });
 
-        console.log(id, fullName, username, email);
+        fullName = current_user.name,
+            username = current_user.username,
+            email = current_user.email,
+            password = current_user.password,
+            roles = current_user.roles;
+
+        console.log(fullName);
+        console.log(username);
+        console.log(email);
+        console.log(password);
+        console.log(roles);
 
         const modalTitle = editModal.querySelector('.modal-title');
         const modalUserFullName = editModal.querySelector('#user-fullName');
         const modalUserUsername = editModal.querySelector('#user-username');
         const modalUserEmail = editModal.querySelector('#user-email');
 
-        modalTitle.textContent = 'Edit User ' + username.innerText;
-        modalUserFullName.value = fullName.innerText;
-        modalUserUsername.value = username.innerText;
-        modalUserEmail.value = email.innerText;
+        modalTitle.textContent = 'Edit User ' + username;
+        modalUserFullName.value = fullName;
+        modalUserUsername.value = username;
+        modalUserEmail.value = email;
+    });
 
-        const form = document.getElementById("edit-user-form");
-        form.action = `/admin?id=${id.innerText}`
-    })
+    const editUserSubmitButton = document.getElementById('edit-user-submit-button')
+    editUserSubmitButton.addEventListener('click', () => {
+        let inputFullName = document.getElementById("user-fullName").value;
+        let inputUsername = document.getElementById("user-username").value;
+        let inputEmail = document.getElementById("user-email").value;
+        let inputPassword = document.getElementById("user-password").value;
+        let inputRoles = document.getElementById("user-edit-roles-select").value;
+        console.log(`${inputFullName}, ${inputUsername}, ${inputEmail}, ${inputPassword}, ${inputRoles}`);
+
+        const editUserData = {
+            "id": id.innerText,
+            "name": inputFullName,
+            "username": inputUsername,
+            "email": inputEmail,
+        }
+
+        if (!(inputPassword === "")) {
+            editUserData.password = inputPassword;
+        }
+        if (!(inputRoles === "")) {
+            if (inputRoles === "ROLE_USER") {
+                editUserData.roles = [
+                    {
+                        id: 1
+                    }
+                ];
+            } else if (inputRoles === "ROLE_ADMIN") {
+                editUserData.roles = [
+                    {
+                        id: 2
+                    }
+                ]
+            }
+        }
+
+        console.log(editUserData);
+
+        const options = {
+            "method": 'PATCH',
+            "headers": {
+                'Content-Type': 'application/json',
+            },
+            "body": JSON.stringify(editUserData)
+        }
+
+        fetch("http://localhost:8080/api", options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                const modal = bootstrap.Modal.getInstance(editModal);
+                modal.hide();
+                fillUsersTable();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
+
+    const createUserButton = document.getElementById("createUserButton");
+    createUserButton.addEventListener('click', () => {
+        let inputFullName = document.getElementById("name-input").value;
+        let inputUsername = document.getElementById("username-input").value;
+        let inputEmail = document.getElementById("email-input").value;
+        let inputPassword = document.getElementById("password-input").value;
+        let inputRoles = document.getElementById("create-user-role-select").value;
+        console.log("ROLES:")
+        console.log(inputRoles);
+
+        const editUserData = {
+            "name": inputFullName,
+            "username": inputUsername,
+            "email": inputEmail,
+        }
+
+        if (!(inputPassword === "")) {
+            editUserData.password = inputPassword;
+        }
+        if (!(inputRoles === "")) {
+            if (inputRoles === "ROLE_USER") {
+                editUserData.roles = [
+                    {
+                        id: 1
+                    }
+                ];
+            } else if (inputRoles === "ROLE_ADMIN") {
+                editUserData.roles = [
+                    {
+                        id: 2
+                    }
+                ]
+            }
+        }
+
+        console.log(editUserData);
+
+        const options = {
+            "method": 'POST',
+            "headers": {
+                'Content-Type': 'application/json',
+            },
+            "body": JSON.stringify(editUserData)
+        }
+
+        fetch("http://localhost:8080/api", options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                fillUsersTable();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    });
 </script>
 </body>
 </html>
